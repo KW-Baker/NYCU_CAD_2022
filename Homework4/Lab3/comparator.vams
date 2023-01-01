@@ -1,0 +1,22 @@
+//Verilog-AMS HDL for "adc", "comparator" "verilogams"
+
+`include "constants.vams"
+`include "disciplines.vams"
+module comparator (vin,vout,vdd,vss,ref);
+input vin,ref;
+inout vss,vdd;
+output vout;
+parameter delay=0, ttime=1p;
+electrical vin,ref,vdd,vout,vss;
+real result;
+
+analog begin
+@(cross((V(vin)-V(ref)),0) or initial_step)
+	if(V(vin)>=V(ref))
+		result = V(vdd);
+	else
+		result = V(vss);
+		
+	V(vout) <+ transition(result,delay,ttime);
+end
+endmodule

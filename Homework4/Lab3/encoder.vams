@@ -1,0 +1,45 @@
+//Verilog-AMS HDL for "adc", "encoder" "verilogams"
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module encoder(i3,i2,i1,i0,
+			   o1,o0);
+
+input i3,i2,i1,i0;
+output reg o1,o0;
+
+wire [3:0] w;
+
+assign w = {i3,i2,i1,i0};
+
+always@(w) begin
+	casex(w)
+		4'b1xxx: begin
+			o1 = 1'b1;
+			o0 = 1'b1;
+		end
+		4'b01xx: begin
+			o1 = 1'b1;
+			o0 = 1'b0;
+		end
+		4'b001x: begin
+			o1 = 1'b0;
+			o0 = 1'b1;
+		end
+		4'b0001: begin
+			o1 = 1'b0;
+			o0 = 1'b0;
+		end
+		4'b0000: begin
+			o1 = 1'b0;
+			o0 = 1'b0;
+		end
+		default: begin
+			o1 = 1'bx;
+			o0 = 1'bx;
+		end
+	endcase
+end
+
+endmodule
